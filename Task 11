@@ -1,0 +1,105 @@
+using System;
+using System.Globalization;
+
+// Enum for Security Privileges
+enum SecurityLevel
+{
+    Guest,
+    Developer,
+    Secretary,
+    DBA
+}
+
+// Struct for Person
+struct Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+}
+
+// Class for Hire Date
+default;
+public class HireDate
+{
+    public int Day { get; set; }
+    public int Month { get; set; }
+    public int Year { get; set; }
+
+    public override string ToString()
+    {
+        return $"{Day:D2}/{Month:D2}/{Year}";
+    }
+}
+
+// Employee Class
+public class Employee
+{
+    public int ID { get; set; }
+    public string Name { get; set; }
+    public SecurityLevel SecurityLevel { get; set; }
+    public decimal Salary { get; set; }
+    public HireDate HireDate { get; set; }
+    private string gender;
+
+    public string Gender
+    {
+        get => gender;
+        set
+        {
+            if (value == "M" || value == "F")
+                gender = value;
+            else
+                throw new ArgumentException("Gender must be 'M' or 'F'.");
+        }
+    }
+
+    public override string ToString()
+    {
+        return $"Employee ID: {ID}\n" +
+               $"Name: {Name}\n" +
+               $"Security Level: {SecurityLevel}\n" +
+               $"Salary: {Salary.ToString("C", CultureInfo.CurrentCulture)}\n" +
+               $"Hire Date: {HireDate}\n" +
+               $"Gender: {Gender}";
+    }
+}
+
+// Main Program
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        // Employee Example
+        Employee employee = new Employee
+        {
+            ID = 1,
+            Name = "Alice",
+            SecurityLevel = SecurityLevel.Developer,
+            Salary = 75000.50m,
+            HireDate = new HireDate { Day = 15, Month = 6, Year = 2015 },
+            Gender = "F"
+        };
+
+        Console.WriteLine(employee);
+
+        // Person Example
+        Person[] persons = new Person[3];
+        for (int i = 0; i < 3; i++)
+        {
+            Console.WriteLine($"Enter details for person {i + 1}:");
+            Console.Write("Name: ");
+            persons[i].Name = Console.ReadLine();
+            Console.Write("Age: ");
+            persons[i].Age = int.Parse(Console.ReadLine());
+        }
+
+        Person oldest = persons[0];
+        foreach (var person in persons)
+        {
+            if (person.Age > oldest.Age)
+                oldest = person;
+        }
+
+        Console.WriteLine($"The oldest person is {oldest.Name}, Age: {oldest.Age}");
+    }
+}
